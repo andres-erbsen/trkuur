@@ -178,7 +178,7 @@
 \DeclareFieldFormat{postnote}{#1}
 
 % Käsk võtmesõna järgi tsiteerimiseks
-\DeclareCiteCommand{\kwcite}[\mkbibparens]
+\DeclareCiteCommand{\kwpcite}[\mkbibparens]
   {\usebibmacro{prenote}}
   {\usebibmacro{citeindex}%
    \usebibmacro{cite}}
@@ -187,5 +187,35 @@
   s.v.%
   \addspace%
   \printfield{postnote}}
+
+\DeclareCiteCommand{\kwcite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\addspace%
+  s.v.%
+  \addspace%
+  \printfield{postnote}}
+
+\newbibmacro*{longcite}{%
+  \global\boolfalse{cbx:loccit}%
+  \iffieldundef{shorthand}
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+       {\usebibmacro{cite:ibid}}
+       {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}
+          {\printfield{title}%
+           \setunit{\addspace}}
+          {\printnames{labelname}%
+           \setunit{\nameyeardelim}}%
+        \usebibmacro{cite:labelyear+extrayear}}}
+    {\usebibmacro{cite:shorthand}}}
+
+\DeclareCiteCommand{\longcite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{longcite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
 
 \endinput

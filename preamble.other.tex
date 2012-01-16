@@ -1,0 +1,47 @@
+% xelatex conditional
+\newif\ifxelatex
+  \ifx\XeTeXglyph\undefined
+    \xelatexfalse
+  \else
+    \xelatextrue
+  \fi
+% addchap conditional
+\newif\ifaddchapdefined
+  \ifx\addchap\undefined
+    \addchapdefinedfalse
+  \else
+    \addchapdefinedtrue
+  \fi
+
+% Me tahame kirjutada eesti keeles ja kasutada ka mitteameerikalikke tähti
+\ifxelatex
+  \usepackage[estonian]{polyglossia}
+\else
+  \usepackage[utf8]{inputenc}
+  \usepackage[estonian]{babel}
+  \usepackage[T1]{fontenc}
+\fi  
+\usepackage{graphicx} % piltide tugi
+\usepackage{biblatex} % kasutatud kirjanduse haldamine
+
+\newcommand{\allikas}[1]{{#1}}
+
+\ifaddchapdefined
+  % \addchap already defined, nothing to do
+\else
+  \let\addchap\chapter
+\fi
+
+% standardsete muutujate tõlked (alias)
+\def\autor#1{\gdef\@author{#1}\PackageWarning{notrkuur}{Use \\author instead of \\autor, the latter does not work without trkuur wraping}}
+\def\pealkiri#1{\gdef\@title{#1}\PackageWarning{notrkuur}{Use \\title instead of \\pealkiri, the latter does not work without trkuur wraping}}
+% uued eestikeelsed muutujad
+\def\klass#1{\PackageWarning{notrkuur}{Command \\klass does not have any effect without trkuur document class}}
+\def\juhendaja#1{\PackageWarning{notrkuur}{Command \\juhendaja does not have any effect without trkuur document class}}
+\def\asutus#1{\PackageWarning{notrkuur}{Command \\asutus does not have any effect without trkuur document class}}
+\def\paber#1{\PackageWarning{notrkuur}{Command \\paber does not have any effect without trkuur document class}}
+\def\koht#1{\PackageWarning{notrkuur}{Command \\koht does not have any effect without trkuur document class}}
+
+\let\kwcite\cite
+\let\kwpcite\parencite
+\let\longcite\cite

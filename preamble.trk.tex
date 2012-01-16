@@ -1,0 +1,22 @@
+% xelatex conditional
+\newif\ifxelatex
+  \ifx\XeTeXglyph\undefined
+    \xelatexfalse
+  \else
+    \xelatextrue
+  \fi
+
+% Me tahame kirjutada eesti keeles ja kasutada ka mitteameerikalikke tähti
+\ifxelatex
+  \usepackage[estonian]{polyglossia}
+\else
+  \usepackage[utf8]{inputenc}
+  \usepackage[estonian]{babel}
+  \usepackage[T1]{fontenc}
+\fi  
+
+\usepackage{graphicx} % piltide tugi
+% kasutatud kirjanduse haldamine
+\usepackage[style=trkuur]{biblatex}
+% Lisame kasutatud kirjanduse automaatselt sisukorda.
+\defbibheading{bibliography}{\addchap{#1}}

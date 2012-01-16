@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{trkuur}[2011/09/01 TRK Uurimuste class]
+\ProvidesClass{trkuur}[2012/01/16 TRK Uurimuste class]
 
 % Enable simple draft mode (from clsguide)
 \DeclareOption{draft}{\setlength{\overfullrule}{5pt}}
@@ -18,14 +18,6 @@
 
 % scriptimismacrod
 \usepackage{etoolbox}
-
-% Me tahame kirjutada eesti keeles ja kasutada ka mitteameerikalikke tähti
-\ifxelatex
-  \usepackage[estonian]{polyglossia}
-\else
-  \usepackage[utf8]{inputenc}
-  \usepackage[estonian]{babel}
-\fi
 
 % tühjad ääred
 \usepackage[top=2.54cm, bottom=2.54cm, left=3.5cm, right=1.5cm]{geometry}
@@ -59,9 +51,10 @@
 \pretocmd{\chapter}{\nummerdame{}}{}{}
 
 %% Tiitellehe genereerimine
-% muutujad
-\def\pealkiri#1{\gdef\@title{#1}}
-\def\autor#1{\gdef\@author{#1}}
+% standardsete muutujate tõlked (alias)
+\def\autor#1{\gdef\@author{#1}\PackageWarning{notrkuur}{Use \\author instead of \\autor, the latter does not work without trkuur wraping}}
+\def\pealkiri#1{\gdef\@title{#1}\PackageWarning{notrkuur}{Use \\title instead of \\pealkiri, the latter does not work without trkuur wraping}}
+% uued eestikeelsed muutujad
 \def\klass#1{\gdef\@klass{#1}}
 \def\juhendaja#1{\gdef\@juhendaja{#1}}
 \def\asutus#1{\gdef\@asutus{#1}}
@@ -69,10 +62,11 @@
 \def\koht#1{\gdef\@koht{#1}}
 
 % vaikeväärtused
-\paber{Uurimist\"o\"o}
+\paber{Uurimistöö}
 \asutus{Tallinna Reaalkool}
 \koht{Tallinn}
 
+% Code to generate the title page
 \renewcommand{\maketitle}{\newpage%
 	\thispagestyle{empty}
 	\vspace*{0cm}
@@ -174,7 +168,7 @@
 
 %% tabelid ja joonised
 
-% Jooniste (ja tabelite?) keskjoondus
+% Jooniste (ja tabelite?) keskjoondus.
 % \makeatletter
 % \def\@floatboxreset{%
 % \reset@font
@@ -184,9 +178,17 @@
 % \makeatother
 
 % tabelite ja jooniste numbrite taha koolonit ei pane
-\usepackage[justification=justified,singlelinecheck=false]{caption}
+\usepackage{caption}
+% Left-align all captions. Always.
+\captionsetup{justification=justified,singlelinecheck=false}
+
+% captions to "Caption" style instead of "Source".
 \newcommand{\trkcaptionsetup}{\captionsetup{labelformat=simple, labelsep=period, labelfont=bf, font=bf}}
-\trkcaptionsetup
+\trkcaptionsetup % And this is also the default
+% captions to  "Source" mode. Only used internally by \allikas
+\newcommand{\captionstosource}{\captionsetup{labelformat=simple, labelsep=period, font=normalfont}}
+% Add source to a figure or table.
+\newcommand{\allikas}[1]{\vspace{-3mm}\captionstosource\caption*{Allikas: #1}\trkcaptionsetup}
 
 % Töö kõik tabelid tuleb nummerdada läbiva numeratsiooniga (ja kui juba tabelid, siis muu ka vist)
 \usepackage{chngcntr}
@@ -195,17 +197,13 @@
 \counterwithout{equation}{chapter}
 \counterwithout{footnote}{chapter}
 
-% tabeli (alla) allika lisamise käsk
-\newcommand{\captionstosource}{\captionsetup{labelformat=simple, labelsep=period, font=normalfont}}
-\newcommand{\allikas}[1]{\vspace{-3mm}\captionstosource\caption*{Allikas: #1}\trkcaptionsetup}
-
 %% Pealkirjade välimus
-\usepackage{sectsty} % still needed? For xelatex too?
+\usepackage{sectsty}
 
 % Times New Roman and Arial all over the paper
 % \usepackage{mathtime} % times-based math font
 \ifxelatex
-  \usepackage{xltxtra} % is this neccessary?
+  \usepackage{xltxtra}
   \setmainfont{Times New Roman} % [Mapping=tex-text]
   \setsansfont{Arial} % Pealkirjad Arial
   % Pealkiri 1: normaallaad + Font: Arial, 16pt., paks, joondatud lehe vasakusse serva).
@@ -213,7 +211,6 @@
   % Madalama taseme (alajaotuste) pealkirjad on väiksemad, võib kasutada arvuti poolt vaikimisi pakutavaid erineva taseme pealkirju.
   \sectionfont{\fontsize{14pt}{16.8pt}\selectfont}
 \else
-  \usepackage[T1]{fontenc}
   \usepackage{times}
   \allsectionsfont{\fontfamily{phv}\selectfont} % Pealkirjad (peaaegu) Arial 
   % Pealkiri 1: normaallaad + Font: Arial, 16pt., paks, joondatud lehe vasakusse serva).
@@ -227,7 +224,7 @@
 \usepackage{setspace}
 \onehalfspacing
 
-% Punkti järel ei ole meil pikka tühikut, isegi kui kohalik LaTeX nii arvab vaikimisi.
+% Punkti järel ei ole meil pikka tühikut, isegi kui kohalik TeX nii arvab vaikimisi.
 \frenchspacing
 
 % Taandridasid pole
@@ -240,14 +237,3 @@
 \titlespacing*{\section}{0pt}{1mm}{-3mm}
 \titlespacing*{\subsection}{0pt}{1mm}{-3mm}
 \titlespacing*{\subsubsection}{0pt}{1mm}{-3mm}
-
-\usepackage{graphicx} % piltide tugi
-\usepackage[style=trkuur]{biblatex} % kasutatud kirjanduse haldamise laadimine
-\defbibheading{bibliography}{\addchap{#1}} % lisame kasutatud kirjanduse sisukorda
-
-%% trkuur formaadilt report peale üle minemiseks lisage algusse:
-%% mõned tiitellehe väljad tuleb ka välja kommenteerida
-%\usepackage{graphicx} % piltide tugi
-%\usepackage{biblatex} % kasutatud kirjanduse haldamise laadimine
-%\newcommand{\allikas}[1]{\hfill{}{#1}\hfill{}}
-%\let\addchap\chapter % seda pole KOMA-script juures vaja, seal juba ok, mujal ikka.
