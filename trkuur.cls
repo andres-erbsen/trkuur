@@ -62,7 +62,7 @@
 \def\koht#1{\gdef\@koht{#1}}
 
 % vaikeväärtused
-\paber{Uurimistöö}
+\paber{Uurimist\"o\"o}
 \asutus{Tallinna Reaalkool}
 \koht{Tallinn}
 
