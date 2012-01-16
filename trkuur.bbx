@@ -1,0 +1,187 @@
+\ProvidesFile{trkuur.bbx}
+
+\ExecuteBibliographyOptions{language=estonian,maxcitenames=2,mincitenames=1,%
+                            dateabbrev=false,sorting=nyvt}
+
+\newbibmacro*{begentry}{}
+\newbibmacro*{finentry}{\finentry}
+
+% Nummerdame kõik sissekanded
+\defbibenvironment{bibliography}%
+{\vspace{5mm}\begin{enumerate}[leftmargin=*]%
+\setlength{\parskip}{3mm}}%
+{\end{enumerate}}%
+{\item}%
+
+% käsk kasutatud materjalide kuvamiseks
+\let\origprintbibliography\printbibliography
+\renewcommand{\printbibliography}{
+  \DeclareNameFormat{}{%
+    \usebibmacro{name:last-first}{##1}{##4}{##6}{##8}%
+    \usebibmacro{name:andothers}}%
+  \origprintbibliography[title={Kasutatud materjalid}]{}%
+  }
+  
+\DeclareFieldFormat
+  [article,inbook,incollection,inproceedings,patent,thesis,unpublished]
+  {title}{#1\isdot}
+
+\DeclareFieldFormat[article]{volume}{nr #1}
+
+%% HACK: fix month name capitalization
+\DeclareFieldFormat{month}{
+\let\MakeCapitalBackup\MakeCapital%
+\let\MakeCapital\lowercase%
+\mkbibmonth{#1}
+\let\MakeCapital\MakeCapitalBackup%
+}
+
+\DeclareBibliographyDriver{customa}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printfield{title}%
+  \setunit{\bibpagerefpunct}\newblock%
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}%
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author+year+title}%
+  \usebibmacro{journal}%
+  \iffieldundef{month}{}{%
+    \iffieldundef{day}{}{%
+      \addcomma\addspace%
+      \printfield{day}. \printfield{month}%
+    }
+  }
+  \iffieldundef{volume}{}{%
+    \addcomma\addspace%
+    \printfield{volume}%
+  }
+  \usebibmacro{pages}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author+year+title}
+  \setunit{\addspace}\newblock
+  \printfield{note}%
+  \setunit{\labelnamepunct\addspace}\newblock
+  \usebibmacro{publisher+location}%
+  \newunit\newblock
+  \usebibmacro{pages}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{misc}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printfield{note}%
+  \setunit{\addcomma\addspace}\newblock
+  \printfield{pages}%
+  \setunit{\addspace}\newblock
+  \usebibmacro{publisher+location+fulldate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author+year+title}
+  \setunit{\labelnamepunct\addspace}\newblock
+  \usebibmacro{url+urldate}%
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+
+\DeclareBibliographyAlias{mvbook}{book}
+\DeclareBibliographyAlias{inbook}{book}
+\DeclareBibliographyAlias{booklet}{book}
+\DeclareBibliographyAlias{collection}{book}
+\DeclareBibliographyAlias{proceedings}{book}
+\DeclareBibliographyAlias{incollection}{book}
+\DeclareBibliographyAlias{periodical}{article}
+
+\DeclareBibliographyAlias{bookinbook}{inbook}
+\DeclareBibliographyAlias{suppbook}{inbook}
+\DeclareBibliographyAlias{mvcollection}{collection}
+\DeclareBibliographyAlias{suppcollection}{incollection}
+\DeclareBibliographyAlias{mvproceedings}{proceedings}
+\DeclareBibliographyAlias{reference}{collection}
+\DeclareBibliographyAlias{mvreference}{reference}
+\DeclareBibliographyAlias{inreference}{incollection}
+\DeclareBibliographyAlias{suppperiodical}{article}
+\DeclareBibliographyAlias{review}{article}
+\DeclareBibliographyAlias{*}{misc}
+
+
+\newbibmacro{author+year+title}{%
+  \ifnameundef{author}{%
+    \printfield{title}%
+  }{%
+    \printnames{author}%
+  }%
+  \iffieldundef{year}{%
+    \addspace%
+  }{%
+    \addspace%
+    (%
+    \printfield{year}%
+    )%
+    \addspace%
+  }%
+  %\setunit{\labelnamepunct}\newblock
+  \ifnameundef{author}{}{%
+    \usebibmacro{title}%
+  }%
+}
+
+\newbibmacro*{publisher+location}{%
+  \printlist{location}%
+  \iflistundef{publisher}
+    {\setunit*{\addcomma\space}}
+    {\setunit*{\addcolon\space}}%
+  \printlist{publisher}%
+  \newunit}
+
+\newbibmacro*{pages}{%
+  \printfield{pages}%
+  \newunit}
+
+\newbibmacro*{publisher+location+fulldate}{%
+  \usebibmacro{publisher+location}
+  \iffieldundef{year}{}{\iffieldundef{month}{}{\iffieldundef{day}{}{
+  \iflistundef{location}{%
+    \addcolon\addspace%
+  }{%
+    \addcomma\addspace%
+  }%
+    \thefield{day}.\thefield{month}.\thefield{year}%
+  }}}}
+
+% jutumärke ega muud eristust ei ole pealkirjadel
+\DeclareFieldFormat{title}{#1}
+\DeclareFieldFormat{journaltitle}{#1}
+% leheküljenumbrid
+\DeclareFieldFormat{pages}{lk #1}
+
+
+% Netiaadresside ette kirjutame "URL" asemel "Loetud"
+\DeclareFieldFormat{url}{Loetud\addcolon\space\url{#1}}
+\renewbibmacro*{url+urldate}{%
+  \printfield{url}%
+  \iffieldundef{urlyear}{}
+    {\addcomma\addspace%
+     \thefield{urlday}.\thefield{urlmonth}.\thefield{urlyear}}}
+
+\endinput
