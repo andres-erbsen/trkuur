@@ -1,8 +1,16 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{trkuur}[2012/01/16 TRK Uurimuste class]
 
+\def\llm{3.5cm}
+\def\rlm{1.5cm}
+\let\addgeom\relax
+
 % Enable simple draft mode (from clsguide)
-\DeclareOption{draft}{\setlength{\overfullrule}{5pt}}
+\DeclareOption{draft}{\setlength{\overfullrule}{5pt}%
+\def\llm{0.5cm}%
+\def\rlm{4.5cm}%
+\def\addgeom{, marginparsep=1mm, marginparwidth=45mm}%
+}
 \ProcessOptions\relax
 
 % xelatex conditional
@@ -20,7 +28,7 @@
 \usepackage{etoolbox}
 
 % tühjad ääred
-\usepackage[top=2.54cm, bottom=2.54cm, left=3.5cm, right=1.5cm]{geometry}
+\usepackage[textwidth=16cm,top=2.54cm, bottom=2.54cm, left=\llm, right=\rlm\addgeom{}]{geometry}
 
 % Sisukorras ja viidetel on lingid
 \usepackage{hyperref}

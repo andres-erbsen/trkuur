@@ -177,27 +177,6 @@
 % leheküljenumbrite ette viidetes ei lisata "p. " vms
 \DeclareFieldFormat{postnote}{#1}
 
-% Käsk võtmesõna järgi tsiteerimiseks
-\DeclareCiteCommand{\kwpcite}[\mkbibparens]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \usebibmacro{cite}}
-  {\multicitedelim}
-  {\addspace%
-  s.v.%
-  \addspace%
-  \printfield{postnote}}
-
-\DeclareCiteCommand{\kwcite}
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \usebibmacro{cite}}
-  {\multicitedelim}
-  {\addspace%
-  s.v.%
-  \addspace%
-  \printfield{postnote}}
-
 \newbibmacro*{longcite}{%
   \global\boolfalse{cbx:loccit}%
   \iffieldundef{shorthand}
@@ -217,5 +196,13 @@
    \usebibmacro{longcite}}
   {\multicitedelim}
   {\usebibmacro{cite:postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{longcite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
 
 \endinput
