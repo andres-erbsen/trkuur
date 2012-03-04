@@ -212,8 +212,8 @@
 % \usepackage{mathtime} % times-based math font
 \ifxelatex
   \usepackage{xltxtra}
-  \setmainfont{Times New Roman} % [Mapping=tex-text]
-  \setsansfont{Arial} % Pealkirjad Arial
+  \setmainfont[Mapping=tex-text]{Times New Roman} % [Mapping=tex-text]
+  \setsansfont[Mapping=tex-text]{Arial} % Pealkirjad Arial
   % Pealkiri 1: normaallaad + Font: Arial, 16pt., paks, joondatud lehe vasakusse serva).
   \chapterfont{\fontsize{16pt}{19.2pt}\selectfont}
   % Madalama taseme (alajaotuste) pealkirjad on väiksemad, võib kasutada arvuti poolt vaikimisi pakutavaid erineva taseme pealkirju.
