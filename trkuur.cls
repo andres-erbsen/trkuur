@@ -127,6 +127,7 @@
 % Lisade pealkirjad stiilis "Lisa 2 Teise lisa pealkiri"
 \newcommand{\lisa}[1]{%
 	\addtocounter{chapter}{1}%
+    \refstepcounter{chapter}
 	\addchap{Lisa \thechapter\enskip#1}%
 	\setcounter{section}{0}%
 	}
