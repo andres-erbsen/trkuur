@@ -11,23 +11,36 @@
     {\ExecuteBibliographyOptions{loccittracker=constrict}}
     {\ExecuteBibliographyOptions{loccittracker=false}}}
 
+
 % Käsk pealkirjade lühendamiseks lõpetades punktiiriga
 \def\@threefirstwords #1 #2 #3 #4\\#5{%
   \ifblank{#1}{}{#1}\ifblank{#2}{}{ #2}\ifblank{#3}{}{ #3}\ifblank{#4}{}{#5}%
 }%
 \edef\threefirstwords#1#2{\noexpand\@threefirstwords#1\space\space\space\noexpand\\{#2}}
 
+\usepackage{xstring}
+
 \newbibmacro*{cite}{%
   \global\boolfalse{cbx:loccit}%
   \iffieldundef{shorthand}
     {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
-       {\usebibmacro{cite:ibid}}
-       {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}
+       {\usebibmacro{cite:ibid}}%
+       {\StrLeft{\strfield{labeltitle}}{4}[\maybesv]%
+       % TODO HACK: detects A.A. as s.v. where A is any letter
+       \StrPosition{\maybesv}{.}[\kaks]%
+       \StrPosition[2]{\maybesv}{.}[\neli]%
+        \IfStrEq{\kaks\neli}{24}
+         {\printnames{labelname}
+         \setunit{\nameyeardelim}%
+         \ifthenelse{\ifnameundef{year}}{\printfield{urlyear}}{\printfield{year}}%
+         \addspace%
+         \usebibmacro{cite:label}}%
+        {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}%
           {\usebibmacro{cite:label}%
            \setunit{\addspace}}
           {\printnames{labelname}%
            \setunit{\nameyeardelim}}%
-        \usebibmacro{cite:labelyear+extrayear}}}
+        \usebibmacro{cite:labelyear+extrayear}}}}
     {\usebibmacro{cite:shorthand}}}
 
 \newbibmacro*{citeyear}{%
