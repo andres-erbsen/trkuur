@@ -133,6 +133,7 @@
     . \dotfill \\
     kuupäev / nimi / allkiri
     \vfill
+    \vfill
     }
 
 
