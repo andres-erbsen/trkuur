@@ -109,6 +109,33 @@
 	\clearpage
 	}
 
+\newcommand{\kinnitusleht}{
+    \PackageWarning{notrkuur}{ginni-tuus-leeht}%
+    \addchap{Kinnitusleht}
+    \vfill
+    Kinnitan, et \begin{itemize}
+        \item koostasin uurimistöö iseseisvalt. Kõigile töös kasutatud teiste autorite töödele ja
+        andme\-allikatele on viidatud;
+        \item olen teadlik, et uurimistööd ei edastata teistele tulu teenimise eesmärgil ega jagata
+        tead\-likult plagieerimiseks.
+    \end{itemize}
+    \dotfill \\
+    kuupäev / nimi / allkiri \\
+    \vfill
+    Tunnistan lõputöö kaitsmisvalmiks. \\
+    \\
+    Juhendajad \\
+    \\
+    . \dotfill \\
+    kuupäev / nimi / allkiri
+    \\
+    \\
+    . \dotfill \\
+    kuupäev / nimi / allkiri
+    \vfill
+    }
+
+
 
 \usepackage{tocloft}
 % jaotuste numbrite taga on punktid
