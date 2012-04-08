@@ -122,7 +122,7 @@
     \dotfill \\
     kuupäev / nimi / allkiri \\
     \vfill
-    Tunnistan lõputöö kaitsmisvalmiks. \\
+    Tunnistan uurimistöö kaitsmisvalmiks. \\
     \\
     Juhendajad \\
     \\
@@ -217,6 +217,9 @@
 \usepackage{caption}
 % Left-align all captions. Always.
 \captionsetup{justification=justified,singlelinecheck=false}
+
+% Joonis vahetult seda kirjeldava teksti juures ehk sama alapeatüki sees
+\usepackage[section]{placeins}
 
 % captions to "Caption" style instead of "Source".
 \newcommand{\trkcaptionsetup}{\captionsetup{labelformat=simple, labelsep=period, labelfont=bf, font=bf}}
