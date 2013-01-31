@@ -276,3 +276,12 @@
 \titlespacing*{\section}{0pt}{1mm}{-3mm}
 \titlespacing*{\subsection}{0pt}{1mm}{-3mm}
 \titlespacing*{\subsubsection}{0pt}{1mm}{-3mm}
+
+% map \chapter* to \addchap
+\makeatletter
+\let\old@chapter\chapter
+\renewcommand{\chapter}{\@ifstar
+                     \addchap%
+                     \old@chapter%
+}
+\makeatother
